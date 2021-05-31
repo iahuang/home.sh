@@ -222,13 +222,13 @@ export class CRTConsole extends React.Component<IProps, IState> {
         });
     }
 
-    clear() {
+    async clear() {
         /*
             Clears the terminal, resetting most terminal state
             variables to their defaults.
         */
 
-        this.setState({
+        await this.setState({
             text: "",
             cursorPosition: 0,
         });
