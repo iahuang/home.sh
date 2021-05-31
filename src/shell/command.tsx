@@ -8,6 +8,8 @@ export interface CommandExecutionEnvironment {
 
 export abstract class Command {
     abstract name: string;
+    description: string | null = null;
+
     private _env: CommandExecutionEnvironment | null;
 
     constructor() {
@@ -21,6 +23,11 @@ export abstract class Command {
     getEnv() {
         if (!this._env) throw new Error("An execution environment has not been defined to this process!");
         return this._env;
+    }
+
+    async sleep(ms: number) {
+        /* simulate a Thread Sleep by using async/promises */
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
     _parseArgv(argsString: string) {
@@ -93,5 +100,5 @@ export abstract class Command {
     // This function will be invoked when the command is used.
     // argv is a list of arguments passed to the command.
     // this function should return an exit code
-    abstract main(argv: string[]): Promise<number>;
+    abstract main(argv: string[]): Promise<number | void>;
 }

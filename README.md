@@ -3,3 +3,12 @@
 A browser homepage modeled after a Unix-style command line interface
 
 ![Screenshot](https://raw.githubusercontent.com/iahuang/home.sh/main/screenshots/1.png)
+
+## Usage
+
+```bash
+$ npm install
+$ tsc
+```
+
+Then, use an extension like [this](https://chrome.google.com/webstore/detail/custom-new-tab-url/mmjbdbjnoablegbkcklggeknkfcjkjia) to set the `index.html` file in this repository as your new homepage.

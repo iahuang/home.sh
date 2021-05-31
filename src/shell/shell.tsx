@@ -55,7 +55,7 @@ export class VirtualShell {
                 let argstring = input.substring(commandName.length).trimLeft();
                 let exitCode = await command.main(command._parseArgv(argstring));
 
-                if (exitCode !== 0) {
+                if (exitCode > 0) {
                     await this.console.println(`Program exited with exit code ${exitCode}`);
                 }
             } else {
@@ -69,18 +69,42 @@ export class VirtualShell {
         /* Begin a shell session */
 
         // register event listener
-        this.console.eventIntercept = (event) => {
+        this.console.preEventIntercept = (event) => {
             if (event.key === "Enter") {
                 this.handleCommandEntry(this.console.getUserTypedString());
             }
+
+            if (event.key === "Tab") {
+                this.console.addTextAtCursor(this.console.state.autocomplete+" ");
+                event.preventDefault();
+            }
         };
 
+        this.console.postEventCallback = (event) => {
+            this.updateAutocomplete();
+        }
+
+        
         this.console.clear();
         await this.console.printLines([
             `Local time: ${this.currentTimeString()}`,
             'Type "help" for a list of commands.\n',
         ]);
         await this.prompt();
+    }
+
+    async updateAutocomplete() {
+        let currText = this.console.getUserTypedString();
+
+        if (currText.length > 0) {
+            for (let cmdName of this._commands.keys()) {
+                if (cmdName.startsWith(currText)) {
+                    await this.console.setAutocomplete(cmdName.substring(currText.length));
+                    return;
+                }
+            }
+        }
+        await this.console.clearAutocomplete();
     }
 
     async prompt() {

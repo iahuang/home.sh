@@ -37,7 +37,9 @@ export class CRTConsole extends React.Component<IProps, IState> {
     // a keyboard event is observed by the console.
     // if this event returns true, the event's
     // default behaviour will be prevented.
-    eventIntercept: ((event: KeyboardEvent) => boolean | undefined | void) | null = null;
+    preEventIntercept: ((event: KeyboardEvent) => boolean | undefined | void) | null = null;
+
+    postEventCallback: ((event: KeyboardEvent) => any) | null = null;
 
     constructor(props: IProps) {
         super(props);
@@ -55,9 +57,11 @@ export class CRTConsole extends React.Component<IProps, IState> {
 
     componentDidMount() {
         // Register keystroke events
-        window.addEventListener("keydown", (event) => {
-            this.handleKeystroke(event);
+        window.addEventListener("keydown", async (event) => {
+            await this.handleKeystroke(event);
         });
+
+        (document.querySelector("console") as HTMLElement)?.focus();
 
         // Register animation loops
         setInterval(() => {
@@ -74,11 +78,11 @@ export class CRTConsole extends React.Component<IProps, IState> {
         (window as any).crtConsole = this;
     }
 
-    handleKeystroke(event: KeyboardEvent) {
+    async handleKeystroke(event: KeyboardEvent) {
         /* Should be called on any keyboard event */
 
-        if (this.eventIntercept) {
-            let preventDefault = this.eventIntercept(event);
+        if (this.preEventIntercept) {
+            let preventDefault = this.preEventIntercept(event);
             if (preventDefault) {
                 return;
             }
@@ -87,55 +91,57 @@ export class CRTConsole extends React.Component<IProps, IState> {
         let key = event.key;
 
         if (key.length == 1) {
-            this.addTextAtCursor(key);
+            await this.addTextAtCursor(key);
         }
 
         if (key === "Backspace") {
-            if (this.state.cursorPosition > this.readonlyPoint) this.backspaceAtCursor();
+            if (this.state.cursorPosition > this.readonlyPoint) await this.backspaceAtCursor();
         }
         if (key === "ArrowRight") {
-            this.cursorRight();
+            await this.cursorRight();
         }
         if (key === "ArrowLeft") {
-            this.cursorLeft();
+            await this.cursorLeft();
         }
 
         this.lastKeystrokeTime = Date.now();
-        this.updateIsTypingState();
+        await this.updateIsTypingState();
+        if (this.postEventCallback) await this.postEventCallback(event);
+
     }
 
-    updateIsTypingState() {
+    async updateIsTypingState() {
         /*
             This function checks whether typing has ceased long enough ago,
             and if so, resumes cursor blinking
         */
 
-        this.setState({
+        await this.setState({
             // check if the time since last keystroke was less than half a second ago.
             isTyping: Date.now() - this.lastKeystrokeTime < 500,
         });
     }
 
-    cursorRight() {
+    async cursorRight() {
         /* Moves the cursor right, limiting it to the length of the state text */
 
-        this.setState({
+        await this.setState({
             cursorPosition: Math.min(this.state.cursorPosition + 1, this.state.text.length),
         });
     }
 
-    cursorLeft() {
+    async cursorLeft() {
         /* Moves the cursor right, limiting it to the "read only point" */
 
-        this.setState({
+        await this.setState({
             cursorPosition: Math.max(this.readonlyPoint, this.state.cursorPosition - 1),
         });
     }
 
-    addTextAtCursor(text: string) {
+    async addTextAtCursor(text: string) {
         /* Writes text where the cursor is, as if being inputted by the user */
 
-        this.setState({
+        await this.setState({
             text:
                 this.state.text.substring(0, this.state.cursorPosition) +
                 text +
@@ -210,11 +216,11 @@ export class CRTConsole extends React.Component<IProps, IState> {
         this.clear();
     }
 
-    backspaceAtCursor() {
+    async backspaceAtCursor() {
         /*
             This function emulates the user pressing the backspace key.
         */
-        this.setState({
+        await this.setState({
             text:
                 this.state.text.substring(0, this.state.cursorPosition - 1) +
                 this.state.text.substring(this.state.cursorPosition),
@@ -238,6 +244,16 @@ export class CRTConsole extends React.Component<IProps, IState> {
     getUserTypedString() {
         /* Returns everything typed by the user, from the readonly point to the end of the text */
         return this.state.text.substr(this.readonlyPoint);
+    }
+
+    async setAutocomplete(text: string) {
+        await this.setState({
+            autocomplete: text
+        });
+    }
+
+    async clearAutocomplete() {
+        await this.setAutocomplete("");
     }
 
     render() {
