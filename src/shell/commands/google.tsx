@@ -10,6 +10,6 @@ export class Command_Google extends Command {
             argv = argv.slice(1);
             useGI = true;
         }
-        window.location.href = `https://www.google.com/search?q=${argv.join("+")}` + (useGI ? "&tbm=isch" : "");
+        await this.openPage(`https://www.google.com/search?q=${argv.join("+")}` + (useGI ? "&tbm=isch" : ""));
     }
 }

@@ -25,6 +25,12 @@ export abstract class Command {
         return this._env;
     }
 
+    async openPage(url: string) {
+        await this.getEnv().console.println("Redirecting...");
+        window.location.href = url;
+        await new Promise((res, rej)=>{});
+    }
+
     async sleep(ms: number) {
         /* simulate a Thread Sleep by using async/promises */
         return new Promise((resolve) => setTimeout(resolve, ms));

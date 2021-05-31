@@ -6,6 +6,7 @@ import { Command_Help } from "./shell/commands/help";
 import { Command_SpanishDict } from "./shell/commands/spanishdict";
 import { TestCommand as Command_Test } from "./shell/commands/testCommand";
 import { Command_Wikipedia } from "./shell/commands/wikipedia";
+import { Command_Youtube } from "./shell/commands/youtube";
 import { VirtualShell } from "./shell/shell";
 
 export function App() {
@@ -21,7 +22,8 @@ export function App() {
                         .registerCommand(Command_Clear)
                         .registerCommand(Command_SpanishDict)
                         .registerCommand(Command_Wikipedia)
-                        .registerCommand(Command_Google);
+                        .registerCommand(Command_Google)
+                        .registerCommand(Command_Youtube);
                     shell.init();
                 }}
             ></CRTConsole>

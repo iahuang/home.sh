@@ -5,6 +5,6 @@ export class Command_Wikipedia extends Command {
     description = "Searches Wikipedia for the given query";
 
     async main(argv: string[]) {
-        window.location.href = `https://en.wikipedia.org/wiki/${argv.join(" ")}`;
+        await this.openPage(`https://en.wikipedia.org/wiki/${argv.join(" ")}`);
     }
 }

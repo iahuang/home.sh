@@ -5,6 +5,7 @@ export class VirtualShell {
     console: CRTConsole;
 
     private _commands = new Map<string, Command>();
+    private _halted = false;
 
     constructor(con: CRTConsole) {
         this.console = con;
@@ -62,7 +63,8 @@ export class VirtualShell {
                 await this.handleInvalidCommand(commandName);
             }
         }
-        await this.prompt();
+
+        if (!this._halted) await this.prompt();
     }
 
     async init() {
@@ -75,22 +77,21 @@ export class VirtualShell {
             }
 
             if (event.key === "Tab") {
-                this.console.addTextAtCursor(this.console.state.autocomplete+" ");
+                this.console.addTextAtCursor(this.console.state.autocomplete + " ");
                 event.preventDefault();
             }
         };
 
         this.console.postEventCallback = (event) => {
             this.updateAutocomplete();
-        }
+        };
 
-        
         this.console.clear();
         await this.console.printLines([
             `Local time: ${this.currentTimeString()}`,
             'Type "help" for a list of commands.\n',
         ]);
-        await this.prompt();
+        if (!this._halted) await this.prompt();
     }
 
     async updateAutocomplete() {
@@ -109,5 +110,10 @@ export class VirtualShell {
 
     async prompt() {
         await this.console.print("> ");
+    }
+
+    _halt() {
+        this._halted = true;
+        this.console.disableInput();
     }
 }

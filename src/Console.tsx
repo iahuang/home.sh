@@ -19,6 +19,8 @@ interface IState {
     autocomplete: string;
 
     isTyping: boolean;
+
+    allowInput: boolean;
 }
 
 function sleep(ms: number) {
@@ -50,6 +52,7 @@ export class CRTConsole extends React.Component<IProps, IState> {
             isCursorVisible: true,
             isTyping: false,
             autocomplete: "",
+            allowInput: true,
         };
         this.lastKeystrokeTime = Date.now();
         this.readonlyPoint = 0;
@@ -76,6 +79,14 @@ export class CRTConsole extends React.Component<IProps, IState> {
 
         // Add reference of this object to the window, for debug purposes
         (window as any).crtConsole = this;
+    }
+
+    async disableInput() {
+        await this.setState({ allowInput: false });
+    }
+
+    async enableInput() {
+        await this.setState({ allowInput: true });
     }
 
     async handleKeystroke(event: KeyboardEvent) {
@@ -107,7 +118,6 @@ export class CRTConsole extends React.Component<IProps, IState> {
         this.lastKeystrokeTime = Date.now();
         await this.updateIsTypingState();
         if (this.postEventCallback) await this.postEventCallback(event);
-
     }
 
     async updateIsTypingState() {
@@ -187,7 +197,7 @@ export class CRTConsole extends React.Component<IProps, IState> {
     }
 
     async println(text: string) {
-        await this.print(text+"\n");
+        await this.print(text + "\n");
     }
 
     async runDemoSequence() {
@@ -248,7 +258,7 @@ export class CRTConsole extends React.Component<IProps, IState> {
 
     async setAutocomplete(text: string) {
         await this.setState({
-            autocomplete: text
+            autocomplete: text,
         });
     }
 
