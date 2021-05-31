@@ -77,12 +77,10 @@ export abstract class Command {
 
                 if (char === " " && !inString) {
                     pushCurrArg();
+                } else if (char === '"') {
+                    inString = !inString;
                 } else {
                     currArg += char;
-                }
-
-                if (char === '"') {
-                    inString = !inString;
                 }
 
                 i++;

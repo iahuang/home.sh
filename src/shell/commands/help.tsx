@@ -9,7 +9,7 @@ export class Command_Help extends Command {
 
         await env.console.println(`Listing ${commands.length} commands:`);
 
-        await env.console.printLines(commands.map((cmd) => " - "+cmd.name));
+        await env.console.printLines(commands.map((cmd) => " - "+cmd.name).sort());
         await env.console.println("");
 
         return 0;
