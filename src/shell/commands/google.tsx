@@ -2,9 +2,14 @@ import { Command } from "../command";
 
 export class Command_Google extends Command {
     name = "google";
-    description = "Searches Google for the provided query. If the -i flag is provided, search Google Images"
+    description = "Searches Google for the provided query. If the -i flag is provided, search Google Images";
 
     async main(argv: string[]) {
-        window.location.href = `https://www.google.com/search?q=${argv.join("+")}`;
+        let useGI = false;
+        if (argv[0] === "-i") {
+            argv = argv.slice(1);
+            useGI = true;
+        }
+        window.location.href = `https://www.google.com/search?q=${argv.join("+")}` + (useGI ? "&tbm=isch" : "");
     }
 }
