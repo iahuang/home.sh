@@ -1,6 +1,7 @@
 import React from "react";
 import { CRTConsole } from "./Console";
 import { Command_Clear } from "./shell/commands/clear";
+import { Command_CD, Command_LS } from "./shell/commands/fs";
 import { Command_Google } from "./shell/commands/google";
 import { Command_Help } from "./shell/commands/help";
 import { Command_SpanishDict } from "./shell/commands/spanishdict";
@@ -17,13 +18,14 @@ export function App() {
                 ref={(el) => {
                     shell = new VirtualShell(el!);
                     shell
-                        .registerCommand(Command_Test)
                         .registerCommand(Command_Help)
                         .registerCommand(Command_Clear)
                         .registerCommand(Command_SpanishDict)
                         .registerCommand(Command_Wikipedia)
                         .registerCommand(Command_Google)
-                        .registerCommand(Command_Youtube);
+                        .registerCommand(Command_Youtube)
+                        .registerCommand(Command_LS)
+                        .registerCommand(Command_CD);
                     shell.init();
                 }}
             ></CRTConsole>

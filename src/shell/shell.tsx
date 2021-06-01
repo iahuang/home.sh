@@ -1,5 +1,6 @@
 import { CRTConsole } from "../Console";
 import { Command } from "./command";
+import { VFS } from "./vfs";
 
 export class VirtualShell {
     console: CRTConsole;
@@ -7,8 +8,11 @@ export class VirtualShell {
     private _commands = new Map<string, Command>();
     private _halted = false;
 
+    vfs: VFS;
+
     constructor(con: CRTConsole) {
         this.console = con;
+        this.vfs = new VFS();
     }
 
     registerCommand(commandConstructor: new () => Command) {
@@ -54,7 +58,7 @@ export class VirtualShell {
             if (command) {
                 // get argstring (everything after the command name)
                 let argstring = input.substring(commandName.length).trimLeft();
-                let exitCode = await command.main(command._parseArgv(argstring));
+                let exitCode = await command._launcher(command._parseArgv(argstring));
 
                 if (exitCode > 0) {
                     await this.console.println(`Program exited with exit code ${exitCode}`);
@@ -89,9 +93,10 @@ export class VirtualShell {
         this.console.clear();
         await this.console.printLines([
             `Local time: ${this.currentTimeString()}`,
-            'Type "help" for a list of commands.\n',
+            'Type "help" for a list of commands.',
         ]);
         if (!this._halted) await this.prompt();
+        (window as any).shell = this;
     }
 
     async updateAutocomplete() {
@@ -109,7 +114,7 @@ export class VirtualShell {
     }
 
     async prompt() {
-        await this.console.print("> ");
+        await this.console.print(this.vfs.cwd+"$ ");
     }
 
     _halt() {

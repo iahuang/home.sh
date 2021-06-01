@@ -167,24 +167,26 @@ export class CRTConsole extends React.Component<IProps, IState> {
         return this.state.cursorPosition === this.state.text.length;
     }
 
-    async printLines(lines: string[]) {
+    async print(text: string, readonly = true) {
         /*
-            Print an array of lines, with a slight delay between each one
+            Analogous to any other print function. If readonly is set,
+            the new text will not be user-editable.
+
+            Printing newlines will incur a slight delay, for stylistic effect.
         */
+
+        let lines = text.split("\n");
         let i = 0;
         for (let line of lines) {
-            if (i !== 0) await this.print("\n");
-            await this.print(line);
+            if (i !== 0) await this._print("\n");
+            await this._print(line);
             await sleep(Math.random() * 30 + 10);
             i++;
         }
     }
 
-    async print(text: string, readonly = true) {
-        /*
-            Analogous to any other print function. If readonly is set,
-            the new text will not be user-editable
-        */
+    async _print(text: string, readonly = true) {
+        
 
         if (this.isCursorAtTextEnd()) {
             await this.setState({ cursorPosition: this.state.cursorPosition + text.length });
@@ -198,6 +200,10 @@ export class CRTConsole extends React.Component<IProps, IState> {
 
     async println(text: string) {
         await this.print(text + "\n");
+    }
+
+    async printLines(lines: string[]) {
+        await this.print(lines.join("\n")+"\n");
     }
 
     async runDemoSequence() {

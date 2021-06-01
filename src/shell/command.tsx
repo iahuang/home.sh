@@ -107,4 +107,13 @@ export abstract class Command {
     // argv is a list of arguments passed to the command.
     // this function should return an exit code
     abstract main(argv: string[]): Promise<number | void>;
+
+    async _launcher(argv: string[]) {
+        try {
+            return await this.main(argv);
+        } catch (err) {
+            await this.getEnv().console.println(err.stack);
+            return 1;
+        }
+    }
 }

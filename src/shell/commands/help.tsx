@@ -36,8 +36,6 @@ export class Command_Help extends Command {
 
         await env.console.printLines(out);
 
-        await env.console.println("");
-
         return 0;
     }
 }
