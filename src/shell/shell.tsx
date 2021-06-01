@@ -41,7 +41,7 @@ export class VirtualShell {
     }
 
     async handleInvalidCommand(name: string) {
-        this.console.println(`No command was found with the name "${name}".`);
+        await this.console.println(`No command was found with the name "${name}".`);
     }
 
     async handleCommandEntry(input: string) {
