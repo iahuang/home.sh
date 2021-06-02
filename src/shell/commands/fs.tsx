@@ -45,3 +45,19 @@ export class Command_CD extends Command {
         }
     }
 }
+
+export class Command_CAT extends Command {
+    name = "cat";
+    description = "Prints the entire contents of a file";
+
+    async main(argv: string[]) {
+        let env = this.getEnv();
+
+        let vfs = env.shell.vfs;
+
+        let path = argv[0];
+
+        let data = vfs.readFile(path);
+        await env.console._print(data || "" + "\n");
+    }
+}

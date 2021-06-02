@@ -7,20 +7,21 @@
         <link rel="stylesheet" href="themes/crt.css" />
         <link rel="stylesheet" href="global.css" />
         <title>home.sh</title>
-        <script src="bundle.js"></script>
     </head>
     <body>
         <div id="root"></div>
+        <div class="bios-console crt" id="bios"></div>
     </body>
     <script>
         requirejs.config({
             paths: {
-                "react": "https://unpkg.com/react@15.3.2/dist/react",
+                react: "https://unpkg.com/react@15.3.2/dist/react",
                 "react-dom": "https://unpkg.com/react-dom@15.3.2/dist/react-dom",
             },
         });
     </script>
+    <script src="bootloader.js"></script>
     <script>
-        requirejs(["index"]);
+        //requirejs(["index"]);
     </script>
 </html>

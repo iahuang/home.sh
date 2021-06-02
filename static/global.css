@@ -11,8 +11,10 @@
     white-space: pre-wrap;
 }
 
-#root {
-    height: 100%;
+.bios-console {
+    color: white;
+    padding: 2vw;
+    white-space: pre-wrap;
 }
 
 /* Adapted from this artcile: http://aleclownes.com/2017/02/01/crt-display.html */

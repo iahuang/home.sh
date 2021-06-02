@@ -271,6 +271,15 @@ export class VFS {
         this._writeFile(this.getEntityFromPath(path)!, data);
     }
 
+    readFile(path: string) {
+        let ent = this.getEntityFromPath(path)!;
+
+        if (!ent) throw new Error("No such file or directory");
+        if (ent.type !== "file") throw new Error("Cannot read from non-file");
+        
+        return localStorage.getItem(prefix+JSON.stringify(ent));
+    }
+
     delete(_path: string) {
         let path = new VFSPath(_path);
 
