@@ -35,9 +35,9 @@ body {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(134, 255, 134, 0.103);
+    background: rgba(255, 255, 255, 0.103);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgb(134, 255, 134);
+    background: white
 }

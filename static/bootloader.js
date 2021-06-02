@@ -79,7 +79,17 @@ function sleep(ms) {
 async function main() {
     let biosConsole = new BiosConsole();
 
-    biosConsole.println("System Bootloader");
+    biosConsole.println("System Bootloader\n");
+
+    // check JS environment
+    let jsEnvValid = localStorage && Object.entries && Map && requirejs;
+
+    if (jsEnvValid) {
+        biosConsole.println("Validating runtime environment...OK");
+    } else {
+        biosConsole.println("fatal error: One or more necessary features are missing from this browser!")
+        return
+    }
 
     let vfs = new BiosVFS();
 
@@ -87,8 +97,14 @@ async function main() {
         biosConsole.println("File system does not exist! Creating root...");
         localStorage.setItem(vfsPrefix + JSON.stringify({ type: "root", id: "ROOT", name: "", parent: "" }), "");
         biosConsole.println("Downloading system...");
-        let req = await fetch("bundle.js");
-        let data = await req.text();
+        let req, data;
+        try {
+            req = await fetch("bundle.js");
+            data = await req.text();
+        } catch (err) {
+            biosConsole.println("Unable to download system. Details:\n" + err.stack);
+            return;
+        }
 
         biosConsole.println(`System downloaded (${(data.length / 1000).toPrecision(2)}kB)`);
 
@@ -102,7 +118,7 @@ async function main() {
 
         biosConsole.println("System has succesfully been installed. Please refresh this page to continue");
     } else {
-        biosConsole.println("Found filesystem, looking for system main...");
+        biosConsole.println("Locating filesystem...OK");
         let systemExecutableEntity;
         try {
             systemExecutableEntity = vfs.loadEntity(["sys", "main.js"]);
@@ -113,7 +129,7 @@ async function main() {
             biosConsole.println("To clear the file system and start over, press Enter.");
             window.addEventListener("keypress", (ev) => {
                 if (ev.key === "Enter") {
-                    biosConsole.println("Performing reset...");
+                    biosConsole.println("Clearing filesystem...");
                     localStorage.clear();
                     biosConsole.println("File system cleared. Please refresh this page.");
                 }
