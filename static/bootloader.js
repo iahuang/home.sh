@@ -126,7 +126,7 @@ async function main() {
             biosConsole.println(
                 "There was an error loading the system executable. Either the file is missing or the file system is corrupted."
             );
-            biosConsole.println("To clear the file system and start over, press Enter.");
+            biosConsole.println("To clear the disk and reinstall the system, press Enter.");
             window.addEventListener("keypress", (ev) => {
                 if (ev.key === "Enter") {
                     biosConsole.println("Clearing filesystem...");

@@ -59,10 +59,6 @@ export class VirtualShell {
                 // get argstring (everything after the command name)
                 let argstring = input.substring(commandName.length).trimLeft();
                 let exitCode = await command._launcher(command._parseArgv(argstring));
-
-                if (exitCode > 0) {
-                    await this.console.println(`Program exited with exit code ${exitCode}`);
-                }
             } else {
                 await this.handleInvalidCommand(commandName);
             }
@@ -114,7 +110,7 @@ export class VirtualShell {
     }
 
     async prompt() {
-        await this.console.print(this.vfs.cwd+"$ ");
+        await this.console.print(this.vfs.cwd + "$ ");
     }
 
     _halt() {

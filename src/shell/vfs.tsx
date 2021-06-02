@@ -276,8 +276,8 @@ export class VFS {
 
         if (!ent) throw new Error("No such file or directory");
         if (ent.type !== "file") throw new Error("Cannot read from non-file");
-        
-        return localStorage.getItem(prefix+JSON.stringify(ent));
+
+        return localStorage.getItem(prefix + JSON.stringify(ent));
     }
 
     delete(_path: string) {
@@ -367,6 +367,15 @@ export class VFS {
 
     _deleteEntity(ent: VFSEntity) {
         localStorage.removeItem(prefix + JSON.stringify(ent));
+    }
+
+    calculateDataUsage() {
+        let bytesUsed = 0;
+        for (let [k, v] of Object.entries(localStorage)) {
+            bytesUsed += k.length + v.length;
+        }
+
+        return bytesUsed;
     }
 
     getAllEntities() {
