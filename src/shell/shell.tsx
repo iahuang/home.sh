@@ -10,6 +10,9 @@ export class VirtualShell {
 
     vfs: VFS;
 
+    _userInputOnEnterCallback: Function | null = null;
+    _busy = false; // true if currently executing a command
+
     constructor(con: CRTConsole) {
         this.console = con;
         this.vfs = new VFS();
@@ -45,6 +48,7 @@ export class VirtualShell {
     }
 
     async handleCommandEntry(input: string) {
+        this._busy = true;
         await this.console.println("");
         // check for commands
 
@@ -63,8 +67,8 @@ export class VirtualShell {
                 await this.handleInvalidCommand(commandName);
             }
         }
-
-        if (!this._halted) await this.prompt();
+        this._busy = false;
+        if (!this._halted) await this.promptNextCommand();
     }
 
     async init() {
@@ -73,7 +77,9 @@ export class VirtualShell {
         // register event listener
         this.console.preEventIntercept = (event) => {
             if (event.key === "Enter") {
-                this.handleCommandEntry(this.console.getUserTypedString());
+                if (!this._busy) this.handleCommandEntry(this.console.getUserTypedString());
+
+                if (this._userInputOnEnterCallback) this._userInputOnEnterCallback();
             }
 
             if (event.key === "Tab") {
@@ -91,7 +97,7 @@ export class VirtualShell {
             `Local time: ${this.currentTimeString()}`,
             'Type "help" for a list of commands.',
         ]);
-        if (!this._halted) await this.prompt();
+        if (!this._halted) await this.promptNextCommand();
         (window as any).shell = this;
     }
 
@@ -109,8 +115,20 @@ export class VirtualShell {
         await this.console.clearAutocomplete();
     }
 
-    async prompt() {
+    async promptNextCommand() {
         await this.console.print(this.vfs.cwd + "$ ");
+    }
+
+    async getUserInput() {
+        return new Promise((resolve, reject) => {
+            this._userInputOnEnterCallback = () => {
+                this._userInputOnEnterCallback = null;
+                let typed = this.console.getUserTypedString();
+                this.console.println("").then(() => {
+                    resolve(typed);
+                });
+            };
+        });
     }
 
     _halt() {

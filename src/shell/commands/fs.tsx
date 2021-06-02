@@ -120,7 +120,7 @@ export class Command_DiskUtil extends Command {
             let confirmed = argv[1] === "-y";
 
             if (!confirmed) {
-                await env.console.println("Warning: This action is irreversible! To confirm, do\ndiskutil clear -y");
+                await env.console.println("Warning: This action is irreversible! To confirm, do\ndiskutil clean -y");
             } else {
                 await env.console.println("Clearing disk...");
                 await this.sleep(500);

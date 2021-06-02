@@ -36,6 +36,11 @@ export abstract class Command {
         return new Promise((resolve) => setTimeout(resolve, ms));
     }
 
+    async systemRestart() {
+        await this.getEnv().console.clear();
+        location.reload();
+    }
+
     _parseArgv(argsString: string) {
         /*
             This method is used to parse everything after the command

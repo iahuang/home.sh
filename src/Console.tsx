@@ -186,12 +186,11 @@ export class CRTConsole extends React.Component<IProps, IState> {
     }
 
     async _print(text: string, readonly = true) {
-        
-
         if (this.isCursorAtTextEnd()) {
             await this.setState({ cursorPosition: this.state.cursorPosition + text.length });
         }
         if (readonly) this.readonlyPoint = this.state.text.length + text.length;
+
         await this.setState({ text: this.state.text + text });
 
         // scroll to bottom
@@ -203,7 +202,7 @@ export class CRTConsole extends React.Component<IProps, IState> {
     }
 
     async printLines(lines: string[]) {
-        await this.print(lines.join("\n")+"\n");
+        await this.print(lines.join("\n") + "\n");
     }
 
     async runDemoSequence() {
@@ -259,7 +258,8 @@ export class CRTConsole extends React.Component<IProps, IState> {
 
     getUserTypedString() {
         /* Returns everything typed by the user, from the readonly point to the end of the text */
-        return this.state.text.substr(this.readonlyPoint);
+        //console.log(this.state.text, this.readonlyPoint);
+        return this.state.text.substring(this.readonlyPoint);
     }
 
     async setAutocomplete(text: string) {
