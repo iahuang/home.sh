@@ -127,11 +127,13 @@ async function main() {
                 "There was an error loading the system executable. Either the file is missing or the file system is corrupted."
             );
             biosConsole.println("To clear the disk and reinstall the system, press Enter.");
-            window.addEventListener("keypress", (ev) => {
+            window.addEventListener("keypress", async (ev) => {
                 if (ev.key === "Enter") {
                     biosConsole.println("Clearing filesystem...");
                     localStorage.clear();
-                    biosConsole.println("File system cleared. Please refresh this page.");
+                    biosConsole.println("File system cleared. Rebooting...");
+                    await sleep(1000);
+                    location.reload();
                 }
             });
             return;
