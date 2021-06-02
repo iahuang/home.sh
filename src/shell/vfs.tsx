@@ -328,9 +328,9 @@ export class VFS {
     }
 
     generateID() {
-        let chars = "1234567890abcdef".split("");
+        let chars = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
         let id = "";
-        for (let i = 0; i < 16; i++) id += randomItem(chars);
+        for (let i = 0; i < 8; i++) id += randomItem(chars);
         return id;
     }
 
