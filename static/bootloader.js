@@ -118,6 +118,7 @@ async function main() {
                     biosConsole.println("File system cleared. Please refresh this page.");
                 }
             });
+            return;
         }
         biosConsole.println("Found system executable, starting...");
         await sleep(300);
@@ -129,7 +130,7 @@ async function main() {
             document.getElementById("root").style.display = "none";
             biosConsole.show();
             biosConsole.clear();
-            biosConsole.println("BIOS Console\n\nAn unexpected error occurred during system execution:\n");
+            biosConsole.println("System Bootloader\n\nAn unexpected error occurred during system execution:\n");
             biosConsole.println(err.stack);
         };
         await requirejs(["index"]);

@@ -61,3 +61,16 @@ export class Command_CAT extends Command {
         await env.console._print(data || "" + "\n");
     }
 }
+
+export class Command_RM extends Command {
+    name = "rm";
+    description = "Deletes a file or directory";
+
+    async main(argv: string[]) {
+        let env = this.getEnv();
+        let vfs = env.shell.vfs;
+        let path = argv[0];
+        vfs.delete(path);
+    }
+}
+

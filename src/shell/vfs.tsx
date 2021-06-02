@@ -288,6 +288,7 @@ export class VFS {
         if (ent) {
             if (ent.type === "file") {
                 this.registry.unregisterEntity(ent);
+                this._deleteEntity(ent);
             } else {
                 // recursively delete directory
             }

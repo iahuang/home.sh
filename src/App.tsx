@@ -1,7 +1,7 @@
 import React from "react";
 import { CRTConsole } from "./Console";
 import { Command_Clear } from "./shell/commands/clear";
-import { Command_CAT, Command_CD, Command_LS } from "./shell/commands/fs";
+import { Command_CAT, Command_CD, Command_LS, Command_RM } from "./shell/commands/fs";
 import { Command_Google } from "./shell/commands/google";
 import { Command_Help } from "./shell/commands/help";
 import { Command_SpanishDict } from "./shell/commands/spanishdict";
@@ -26,7 +26,8 @@ export function App() {
                         .registerCommand(Command_Youtube)
                         .registerCommand(Command_LS)
                         .registerCommand(Command_CD)
-                        .registerCommand(Command_CAT);
+                        .registerCommand(Command_CAT)
+                        .registerCommand(Command_RM);
                     shell.init();
                 }}
             ></CRTConsole>
