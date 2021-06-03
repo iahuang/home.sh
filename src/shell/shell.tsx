@@ -129,6 +129,7 @@ export class VirtualShell {
                 });
             };
         });
+
     }
 
     _halt() {

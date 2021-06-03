@@ -76,9 +76,34 @@ function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function main() {
-    let biosConsole = new BiosConsole();
+let biosConsole = new BiosConsole();
+let vfs = new BiosVFS();
 
+async function systemInstallHelper() {
+    biosConsole.println("Downloading system...");
+    let req, data;
+    try {
+        req = await fetch("bundle.js");
+        data = await req.text();
+    } catch (err) {
+        biosConsole.println("Unable to download system. Details:\n" + err.stack);
+        return;
+    }
+
+    biosConsole.println(`System downloaded (${(data.length / 1000).toPrecision(2)}kB)`);
+
+    biosConsole.println("Installing...");
+
+    localStorage.setItem(vfsPrefix + JSON.stringify({ type: "dir", id: "SYS", name: "sys", parent: "ROOT" }), "");
+    localStorage.setItem(
+        vfsPrefix + JSON.stringify({ type: "file", id: "MAIN", name: "main.js", parent: "SYS" }),
+        data
+    );
+
+    biosConsole.println("System has succesfully been installed. Please refresh this page to continue");
+}
+
+async function main() {
     biosConsole.println("System Bootloader\n");
 
     // check JS environment
@@ -87,36 +112,15 @@ async function main() {
     if (jsEnvValid) {
         biosConsole.println("Validating runtime environment...OK");
     } else {
-        biosConsole.println("fatal error: One or more necessary features are missing from this browser!")
-        return
+        biosConsole.println("fatal error: One or more necessary features are missing from this browser!");
+        return;
     }
-
-    let vfs = new BiosVFS();
 
     if (!vfs.rootId) {
         biosConsole.println("File system does not exist! Creating root...");
         localStorage.setItem(vfsPrefix + JSON.stringify({ type: "root", id: "ROOT", name: "", parent: "" }), "");
-        biosConsole.println("Downloading system...");
-        let req, data;
-        try {
-            req = await fetch("bundle.js");
-            data = await req.text();
-        } catch (err) {
-            biosConsole.println("Unable to download system. Details:\n" + err.stack);
-            return;
-        }
 
-        biosConsole.println(`System downloaded (${(data.length / 1000).toPrecision(2)}kB)`);
-
-        biosConsole.println("Installing...");
-
-        localStorage.setItem(vfsPrefix + JSON.stringify({ type: "dir", id: "SYS", name: "sys", parent: "ROOT" }), "");
-        localStorage.setItem(
-            vfsPrefix + JSON.stringify({ type: "file", id: "MAIN", name: "main.js", parent: "SYS" }),
-            data
-        );
-
-        biosConsole.println("System has succesfully been installed. Please refresh this page to continue");
+        await systemInstallHelper();
     } else {
         biosConsole.println("Locating filesystem...OK");
         let systemExecutableEntity;
