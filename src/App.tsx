@@ -17,22 +17,7 @@ export function App() {
         <div className="main crt">
             <CRTConsole
                 ref={(el) => {
-                    shell = new VirtualShell(el!);
-                    shell
-                        .registerCommand(Command_Help)
-                        .registerCommand(Command_Clear)
-                        .registerCommand(Command_SpanishDict)
-                        .registerCommand(Command_Wikipedia)
-                        .registerCommand(Command_Google)
-                        .registerCommand(Command_Youtube)
-                        .registerCommand(Command_LS)
-                        .registerCommand(Command_CD)
-                        .registerCommand(Command_CAT)
-                        .registerCommand(Command_RM)
-                        .registerCommand(Command_DiskUtil)
-                        .registerCommand(Command_Reboot)
-                        .registerCommand(Command_SysUpdate);
-                    shell.init();
+                    
                 }}
             ></CRTConsole>
         </div>

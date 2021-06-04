@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 define("log_example", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.logText = void 0;
     exports.logText = `SysRAM: 96 MB
 Flash:  16 MB
 In:     serial
@@ -162,7 +161,6 @@ Ready...`;
 define("Console", ["require", "exports", "react", "log_example"], function (require, exports, react_1, log_example_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.CRTConsole = void 0;
     react_1 = __importDefault(react_1);
     function sleep(ms) {
         /* Asynchronous sleep function */
@@ -413,7 +411,6 @@ define("Console", ["require", "exports", "react", "log_example"], function (requ
 define("shell/vfs", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.VFS = exports.VFSPath = exports.toPath = exports.prefix = void 0;
     exports.prefix = "vfs::"; // used to distinguish localStorage entries
     function randomItem(items) {
         return items[Math.floor(Math.random() * items.length)];
@@ -721,7 +718,6 @@ define("shell/vfs", ["require", "exports"], function (require, exports) {
 define("shell/shell", ["require", "exports", "shell/vfs"], function (require, exports, vfs_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.VirtualShell = void 0;
     class VirtualShell {
         constructor(con) {
             this._commands = new Map();
@@ -839,7 +835,6 @@ define("shell/shell", ["require", "exports", "shell/vfs"], function (require, ex
 define("shell/command", ["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command = void 0;
     class Command {
         constructor() {
             this.description = null;
@@ -882,7 +877,7 @@ define("shell/command", ["require", "exports"], function (require, exports) {
             let escapedCharacters = {
                 [`\\"`]: `"`,
                 [`\\ `]: " ",
-                [`\\\\`]: "\\", // `\\` should be `\`
+                [`\\\\`]: "\\",
             };
             let pushCurrArg = () => {
                 if (currArg)
@@ -939,7 +934,6 @@ define("shell/command", ["require", "exports"], function (require, exports) {
 define("shell/commands/clear", ["require", "exports", "shell/command"], function (require, exports, command_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_Clear = void 0;
     class Command_Clear extends command_1.Command {
         constructor() {
             super(...arguments);
@@ -956,7 +950,6 @@ define("shell/commands/clear", ["require", "exports", "shell/command"], function
 define("shell/commands/fs", ["require", "exports", "shell/command", "shell/vfs"], function (require, exports, command_2, vfs_2) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_DiskUtil = exports.Command_RM = exports.Command_CAT = exports.Command_CD = exports.Command_LS = void 0;
     function sizeDescriptor(size) {
         const k = 1024;
         if (size >= k * k) {
@@ -1117,7 +1110,6 @@ define("shell/commands/fs", ["require", "exports", "shell/command", "shell/vfs"]
 define("shell/commands/google", ["require", "exports", "shell/command"], function (require, exports, command_3) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_Google = void 0;
     class Command_Google extends command_3.Command {
         constructor() {
             super(...arguments);
@@ -1138,7 +1130,6 @@ define("shell/commands/google", ["require", "exports", "shell/command"], functio
 define("shell/commands/help", ["require", "exports", "shell/command"], function (require, exports, command_4) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_Help = void 0;
     class Command_Help extends command_4.Command {
         constructor() {
             super(...arguments);
@@ -1178,7 +1169,6 @@ define("shell/commands/help", ["require", "exports", "shell/command"], function 
 define("shell/commands/sys", ["require", "exports", "shell/command"], function (require, exports, command_5) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_SysUpdate = exports.Command_Reboot = void 0;
     class Command_Reboot extends command_5.Command {
         constructor() {
             super(...arguments);
@@ -1222,7 +1212,6 @@ define("shell/commands/sys", ["require", "exports", "shell/command"], function (
 define("shell/commands/spanishdict", ["require", "exports", "shell/command"], function (require, exports, command_6) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_SpanishDict = void 0;
     class Command_SpanishDict extends command_6.Command {
         constructor() {
             super(...arguments);
@@ -1238,7 +1227,6 @@ define("shell/commands/spanishdict", ["require", "exports", "shell/command"], fu
 define("shell/commands/testCommand", ["require", "exports", "shell/command"], function (require, exports, command_7) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.TestCommand = void 0;
     class TestCommand extends command_7.Command {
         constructor() {
             super(...arguments);
@@ -1255,7 +1243,6 @@ define("shell/commands/testCommand", ["require", "exports", "shell/command"], fu
 define("shell/commands/wikipedia", ["require", "exports", "shell/command"], function (require, exports, command_8) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_Wikipedia = void 0;
     class Command_Wikipedia extends command_8.Command {
         constructor() {
             super(...arguments);
@@ -1271,7 +1258,6 @@ define("shell/commands/wikipedia", ["require", "exports", "shell/command"], func
 define("shell/commands/youtube", ["require", "exports", "shell/command"], function (require, exports, command_9) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Command_Youtube = void 0;
     class Command_Youtube extends command_9.Command {
         constructor() {
             super(...arguments);
@@ -1289,31 +1275,14 @@ define("shell/commands/youtube", ["require", "exports", "shell/command"], functi
     }
     exports.Command_Youtube = Command_Youtube;
 });
-define("App", ["require", "exports", "react", "Console", "shell/commands/clear", "shell/commands/fs", "shell/commands/google", "shell/commands/help", "shell/commands/sys", "shell/commands/spanishdict", "shell/commands/wikipedia", "shell/commands/youtube", "shell/shell"], function (require, exports, react_2, Console_1, clear_1, fs_1, google_1, help_1, sys_1, spanishdict_1, wikipedia_1, youtube_1, shell_1) {
+define("App", ["require", "exports", "react", "Console"], function (require, exports, react_2, Console_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.App = void 0;
     react_2 = __importDefault(react_2);
     function App() {
         let shell;
         return (react_2.default.createElement("div", { className: "main crt" },
             react_2.default.createElement(Console_1.CRTConsole, { ref: (el) => {
-                    shell = new shell_1.VirtualShell(el);
-                    shell
-                        .registerCommand(help_1.Command_Help)
-                        .registerCommand(clear_1.Command_Clear)
-                        .registerCommand(spanishdict_1.Command_SpanishDict)
-                        .registerCommand(wikipedia_1.Command_Wikipedia)
-                        .registerCommand(google_1.Command_Google)
-                        .registerCommand(youtube_1.Command_Youtube)
-                        .registerCommand(fs_1.Command_LS)
-                        .registerCommand(fs_1.Command_CD)
-                        .registerCommand(fs_1.Command_CAT)
-                        .registerCommand(fs_1.Command_RM)
-                        .registerCommand(fs_1.Command_DiskUtil)
-                        .registerCommand(sys_1.Command_Reboot)
-                        .registerCommand(sys_1.Command_SysUpdate);
-                    shell.init();
                 } })));
     }
     exports.App = App;
@@ -1324,4 +1293,50 @@ define("index", ["require", "exports", "App"], function (require, exports, App_1
     requirejs(["react", "react-dom"], function (React, ReactDOM) {
         ReactDOM.render(App_1.App(), document.getElementById("root"));
     });
+});
+define("sys", ["require", "exports", "shell/commands/clear", "shell/commands/fs", "shell/commands/google", "shell/commands/help", "shell/commands/spanishdict", "shell/commands/sys", "shell/commands/wikipedia", "shell/commands/youtube", "shell/shell", "shell/vfs"], function (require, exports, clear_1, fs_1, google_1, help_1, spanishdict_1, sys_1, wikipedia_1, youtube_1, shell_1, vfs_3) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    class System {
+        constructor() {
+            this._console = null;
+            this._shell = null;
+            this.vfs = new vfs_3.VFS();
+        }
+        onBootInit() {
+            // set environment
+        }
+        bindConsoleInterface(consoleInterface) {
+            this._console = consoleInterface;
+        }
+        initShell() {
+            this._shell = new shell_1.VirtualShell(this.getConsole());
+            this._shell
+                .registerCommand(help_1.Command_Help)
+                .registerCommand(clear_1.Command_Clear)
+                .registerCommand(spanishdict_1.Command_SpanishDict)
+                .registerCommand(wikipedia_1.Command_Wikipedia)
+                .registerCommand(google_1.Command_Google)
+                .registerCommand(youtube_1.Command_Youtube)
+                .registerCommand(fs_1.Command_LS)
+                .registerCommand(fs_1.Command_CD)
+                .registerCommand(fs_1.Command_CAT)
+                .registerCommand(fs_1.Command_RM)
+                .registerCommand(fs_1.Command_DiskUtil)
+                .registerCommand(sys_1.Command_Reboot)
+                .registerCommand(sys_1.Command_SysUpdate);
+            this._shell.init();
+        }
+        getShell() {
+            if (!this._shell)
+                throw new Error("Shell has not been initialized!");
+            return this._shell;
+        }
+        getConsole() {
+            if (!this._console)
+                throw new Error("Console has not been initialized!");
+            return this._console;
+        }
+    }
+    exports.System = System;
 });
